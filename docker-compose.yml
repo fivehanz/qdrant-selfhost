@@ -6,12 +6,16 @@ services:
       QDRANT__SERVICE__HOST: '0.0.0.0'
       QDRANT__SERVICE__HTTP_PORT: '6333'
       QDRANT__SERVICE__GRPC_PORT: '6334'
-      QDRANT__AUTH__API_KEY: ${QDRANT__AUTH__API_KEY} 
+      QDRANT__SERVICE__API_KEY: ${QDRANT__SERVICE__API_KEY} 
     volumes:
       - /opt/apps/persistence/qdrant:/qdrant/storage
     ports:
       - "6333:6333"
       - "6334:6334"
+    expose:
+      - "6333"      # Internally makes port 6333 available to other containers
+      - "6334"      # Internally makes port 6334 available to other containers
+      # - "6335"      # Internally makes port 6335 available to other containers   
     networks:
       - qdrant_network
     restart: unless-stopped
