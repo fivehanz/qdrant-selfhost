@@ -24,9 +24,9 @@ services:
     image: mintplexlabs/vectoradmin:latest
     container_name: vector-admin
     ports:
-      - "4001:4001"
+      - "3001:3001"
     environment:
-      SERVER_PORT: '4001'
+      SERVER_PORT: '3001'
       DATABASE_CONNECTION_STRING: ${VECTOR_ADMIN_DATABASE_URL-postgresql://vectoradmin:password@postgres:5432/vdbms}
     env_file:
       - .env
