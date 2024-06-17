@@ -20,6 +20,35 @@ services:
       - qdrant_network
     restart: unless-stopped
 
+  vector-admin:
+    image: mintplexlabs/vectoradmin:latest
+    container_name: vector-admin
+    ports:
+      - "4001:4001"
+    environment:
+      SERVER_PORT: '4001'
+      DATABASE_CONNECTION_STRING: ${VECTOR_ADMIN_DATABASE_URL-postgresql://vectoradmin:password@postgres:5432/vdbms}
+    env_file:
+      - .env
+    networks:
+      - qdrant_network
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: vector-admin-db
+    volumes:
+      - vectordb-postgres-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: vectoradmin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vdbms
+    networks:
+      - qdrant_network
+    restart: unless-stopped
+
 networks:
   qdrant_network:
     driver: bridge
